@@ -1,6 +1,8 @@
 package com.capename.springboot.backend.apirest.models.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -8,9 +10,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "clientes")
@@ -25,13 +31,25 @@ public class Cliente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column( nullable = false )
 	private String nombre;
 	private String apellido;
+	@Column(nullable = false, unique = true)
 	private String email;
 	
-	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
+	@Column(name = "create_at")		
 	private Date createAt;
+	
+	@PrePersist	
+	public void prePersist() {
+		createAt = new Date();
+	}
+	
+	@PreUpdate
+	public void preUpdate() {
+		createAt = new Date();
+	}
 	
 
 	public Long getId() {

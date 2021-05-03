@@ -1,4 +1,5 @@
  /* Populate tabla clientes */
+ 
  INSERT INTO clientes (nombre, apellido, email, create_at) values('Cristian', 'Pena', 'capem76@hotmail.com', '2021-04-28');
  INSERT INTO clientes (nombre, apellido, email, create_at) values('Pedro', 'Gonzales', 'pgonzales@hotmail.com', '2021-03-28');
  INSERT INTO clientes (nombre, apellido, email, create_at) values('Alberto', 'Monaco', 'amonaco@hgmail.com', '2021-01-08');
