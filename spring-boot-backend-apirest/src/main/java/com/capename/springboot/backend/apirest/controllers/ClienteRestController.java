@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.exception.DataException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capename.springboot.backend.apirest.models.dao.services.IClienteService;
@@ -28,6 +29,8 @@ import com.capename.springboot.backend.apirest.models.entity.Cliente;
 @RestController
 @RequestMapping("/api")
 public class ClienteRestController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ClienteRestController.class);
 	
 	@Autowired
 	private IClienteService clienteService;
@@ -57,7 +60,9 @@ public class ClienteRestController {
 			response.put( "mensaje", "El cliente ID: ".concat(id.toString().concat(" no existe en la base de datos!") ));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<Cliente>( cliente, HttpStatus.OK );
+		response.put("cliente", cliente);
+		
+		return new ResponseEntity<Map<String,Object>>( response, HttpStatus.OK );
 		
 	}
 	
@@ -69,7 +74,8 @@ public class ClienteRestController {
 		try {
 			clienteNuevo = clienteService.save(cliente);
 		} catch (DataAccessException e) {
-			response.put("mensaje", "Error al realizar insert en la BDD");
+			logger.error("Error al crear el cliente ".concat( e.getMostSpecificCause().getMessage() ), e.fillInStackTrace() );			
+			response.put("mensaje", "Error al crear cliente en la BDD");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -120,7 +126,7 @@ public class ClienteRestController {
 			clienteService.delete(id);
 			
 		} catch (DataAccessException e) {
-			response.put("Mensaje", "Error al borrar cliente en la BDD");
+			response.put("mensaje", "Error al borrar cliente en la BDD");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>( response, HttpStatus.INTERNAL_SERVER_ERROR );
 		}
