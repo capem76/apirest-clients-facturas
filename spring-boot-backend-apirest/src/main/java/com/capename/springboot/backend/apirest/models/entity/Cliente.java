@@ -17,6 +17,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -35,7 +36,7 @@ public class Cliente implements Serializable {
 	private Long id;
 	
 	@NotEmpty(message = "no puede estar vacio")
-	@Size(min = 4, max = 12, message = "el tamaño tiene que ser entre 4 y 12 caracteres")
+	@Size(min = 4, max = 25, message = "el tamaño tiene que ser entre 4 y 25 caracteres")
 	@Column( nullable = false )
 	private String nombre;
 	
@@ -44,22 +45,19 @@ public class Cliente implements Serializable {
 	
 	@NotEmpty(message = "no puede estar vacio")
 	@Email(message = "no es un formato de correo valida")
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false, unique = false)
 	private String email;
 	
+	@NotNull( message = "no puede estar vacio" )
 	@Temporal(TemporalType.DATE)
 	@Column(name = "create_at")		
 	private Date createAt;
 	
-	@PrePersist	
-	public void prePersist() {
-		createAt = new Date();
-	}
-	
-	@PreUpdate
-	public void preUpdate() {
-		createAt = new Date();
-	}
+		
+//	@PreUpdate
+//	public void preUpdate() {
+//		createAt = new Date();
+//	}
 	
 
 	public Long getId() {

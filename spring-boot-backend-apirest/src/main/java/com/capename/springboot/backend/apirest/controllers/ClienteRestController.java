@@ -15,6 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -45,6 +48,14 @@ public class ClienteRestController {
 	@GetMapping("/clientes")
 	public List<Cliente> index(){		
 		return clienteService.findAll();
+		
+	}
+	
+	@GetMapping("/clientes/page/{page}")
+	public Page<Cliente> index( @PathVariable Integer page ){	
+		Pageable pageable = PageRequest.of(page, 4);
+		
+		return clienteService.findAll( pageable )  ;
 		
 	}
 	
@@ -140,7 +151,8 @@ public class ClienteRestController {
 		try {
 			clienteActual.setApellido(cliente.getApellido());
 			clienteActual.setNombre(cliente.getNombre());
-			clienteActual.setEmail(cliente.getEmail());			
+			clienteActual.setEmail(cliente.getEmail());	
+			clienteActual.setCreateAt(cliente.getCreateAt());
 			
 			clienteActualizado = clienteService.save(clienteActual);
 			

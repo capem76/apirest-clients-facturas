@@ -2,9 +2,14 @@ package com.capename.springboot.backend.apirest.models.dao.services;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.capename.springboot.backend.apirest.models.entity.Cliente;
 
 public interface IClienteService {
+	
+	public Page<Cliente> findAll( Pageable pageable );
 	
 	public List<Cliente> findAll();
 	
