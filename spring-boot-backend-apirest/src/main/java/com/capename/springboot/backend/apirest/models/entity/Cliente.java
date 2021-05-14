@@ -52,6 +52,8 @@ public class Cliente implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "create_at")		
 	private Date createAt;
+
+	private String foto;
 	
 		
 //	@PreUpdate
@@ -99,12 +101,23 @@ public class Cliente implements Serializable {
 	public void setCreateAt(Date createAt) {
 		this.createAt = createAt;
 	}
+	
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
 
 	@Override
 	public String toString() {
 		return "Cliente [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", email=" + email
-				+ ", createAt=" + createAt + "]";
+				+ ", createAt=" + createAt + ", foto=" + foto + "]";
 	}
+
+
+	
 	
 	
 

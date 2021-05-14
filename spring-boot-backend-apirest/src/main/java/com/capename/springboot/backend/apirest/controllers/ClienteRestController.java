@@ -1,11 +1,17 @@
 package com.capename.springboot.backend.apirest.controllers;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -30,10 +36,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.capename.springboot.backend.apirest.models.dao.services.IClienteService;
 import com.capename.springboot.backend.apirest.models.entity.Cliente;
+import com.capename.springboot.backend.apirest.util.Utileria;
 
 @CrossOrigin( origins = {"http://localhost:4200"} )
 @RestController
@@ -174,6 +183,20 @@ public class ClienteRestController {
 		Map<String, Object> response = new HashMap<>();
 		
 		try {
+			Cliente cliente = clienteService.findById(id);
+			String nombreFotoAnterior = cliente.getFoto();			
+			
+			if( nombreFotoAnterior != null && nombreFotoAnterior.length() > 0 ) {
+				System.out.println("nombreFotoAnterior: " + nombreFotoAnterior);
+				Path rutaFotoAnterior = Paths.get("uploads").resolve(nombreFotoAnterior).toAbsolutePath();
+				File archivoFotoAnterior = rutaFotoAnterior.toFile(); 
+				if ( archivoFotoAnterior.exists() && archivoFotoAnterior.canRead() ) {
+					archivoFotoAnterior.delete();
+				}
+				
+				
+			}
+			
 			clienteService.delete(id);
 			
 		} catch (DataAccessException e) {
@@ -182,10 +205,59 @@ public class ClienteRestController {
 			return new ResponseEntity<Map<String, Object>>( response, HttpStatus.INTERNAL_SERVER_ERROR );
 		}
 		
-		response.put("mensaje", "Cliente ha  sido eliminado con exito");
+		response.put("mensaje", "Cliente "+ id +"ha  sido eliminado con exito");
 		
 		
 		return new ResponseEntity<Map<String, Object>>( response, HttpStatus.OK );
+	}
+	
+	@PostMapping("/clientes/upload")
+	public ResponseEntity<?> upload( @RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Long id ){		
+		Map<String, Object> response = new HashMap<>();
+		
+		Cliente cliente = clienteService.findById(id);		
+		
+		if (!archivo.isEmpty()) {
+			String nombreArchivoOriginal = archivo.getOriginalFilename();			
+//			String nombreArchivo = UUID.randomUUID().toString().concat("-").concat( nombreArchivoOriginal.replace(" ", "-") );
+			String nombreArchivo = Utileria.randomAlphaNumeric(10) + "-"+ "CLT" + cliente.getId().toString() +"-" + nombreArchivoOriginal.replace(" ", "-");
+			Path rutaArchivo = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
+			
+			try {
+				Files.copy(archivo.getInputStream(), rutaArchivo);
+			} catch (IOException e) {
+				logger.error("Error en subir fichero: " + e.getCause().getMessage());
+				e.printStackTrace();
+				response.put("mensaje", "Error al subir fichero " + nombreArchivo);
+				response.put("error", e.getMessage().concat(": ").concat(e.getCause().getMessage()));
+				return new ResponseEntity<Map<String, Object>>( response, HttpStatus.INTERNAL_SERVER_ERROR );
+			}
+			
+			String nombreFotoAnterior = cliente.getFoto();
+			
+			
+			if( nombreFotoAnterior != null && nombreFotoAnterior.length() > 0 ) {
+				System.out.println("nombreFotoAnterior: " + nombreFotoAnterior);
+				Path rutaFotoAnterior = Paths.get("uploads").resolve(nombreFotoAnterior).toAbsolutePath();
+				File archivoFotoAnterior = rutaFotoAnterior.toFile(); 
+				if ( archivoFotoAnterior.exists() && archivoFotoAnterior.canRead() ) {
+					archivoFotoAnterior.delete();
+				}
+				
+				
+			}
+			
+			cliente.setFoto(nombreArchivo);
+			clienteService.save(cliente);
+			
+			response.put("cliente", cliente);
+			response.put("mensaje", "Has subido correctamente la imagen " + nombreArchivo);
+			
+		}
+		
+		
+		
+		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.CREATED);
 	}
 	
 	
