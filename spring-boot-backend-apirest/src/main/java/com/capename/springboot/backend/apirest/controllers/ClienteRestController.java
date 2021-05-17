@@ -221,11 +221,12 @@ public class ClienteRestController {
 		
 		Cliente cliente = clienteService.findById(id);		
 		
-		if (!archivo.isEmpty()) {
+		if (!archivo.isEmpty()) {			
 			String nombreArchivoOriginal = archivo.getOriginalFilename();			
 //			String nombreArchivo = UUID.randomUUID().toString().concat("-").concat( nombreArchivoOriginal.replace(" ", "-") );
 			String nombreArchivo = Utileria.randomAlphaNumeric(10) + "-"+ "CLT" + cliente.getId().toString() +"-" + nombreArchivoOriginal.replace(" ", "-");
 			Path rutaArchivo = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
+			logger.info(rutaArchivo.toString());
 			
 			try {
 				Files.copy(archivo.getInputStream(), rutaArchivo);
@@ -268,6 +269,7 @@ public class ClienteRestController {
 	public ResponseEntity<Resource> verFoto( @PathVariable String nombreFoto ) {
 		Path rutaArchivo = Paths.get("uploads").resolve(nombreFoto).toAbsolutePath();		
 		Resource recurso = null;
+		logger.info("ruta fichero: " + rutaArchivo.toString());
 		
 		try {
 			recurso = new UrlResource(rutaArchivo.toUri());
@@ -276,7 +278,13 @@ public class ClienteRestController {
 		}
 		
 		if( !recurso.exists() && !recurso.isReadable() ) {
-			throw new RuntimeException("Error al cargar la imagen: " + nombreFoto);
+			rutaArchivo = Paths.get("src/main/resources/static/images").resolve("no-user-3.png").toAbsolutePath();
+			try {
+				recurso = new UrlResource(rutaArchivo.toUri());
+			} catch (MalformedURLException e) {			
+				e.printStackTrace();			
+			}
+			logger.error("error al cargar la foto" + nombreFoto);
 		}
 		
 		HttpHeaders cabeceraHttp = new HttpHeaders();
