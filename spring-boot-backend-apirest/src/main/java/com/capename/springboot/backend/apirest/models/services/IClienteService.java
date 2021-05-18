@@ -1,4 +1,4 @@
-package com.capename.springboot.backend.apirest.models.dao.services;
+package com.capename.springboot.backend.apirest.models.services;
 
 import java.util.List;
 
