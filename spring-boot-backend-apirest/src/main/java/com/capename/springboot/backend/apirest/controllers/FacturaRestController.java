@@ -1,5 +1,9 @@
 package com.capename.springboot.backend.apirest.controllers;
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,12 +15,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capename.springboot.backend.apirest.models.entity.Factura;
+import com.capename.springboot.backend.apirest.models.entity.Producto;
 import com.capename.springboot.backend.apirest.models.services.IClienteService;
 
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("/api")
 public class FacturaRestController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ClienteRestController.class);
 	
 	@Autowired
 	private IClienteService clienteService;
@@ -32,5 +39,12 @@ public class FacturaRestController {
 	public void delete( @PathVariable Long id ) {
 		clienteService.deleteFacturaById(id);
 		
+	}
+	
+	@GetMapping("/facturas/filtrar-productos/{term}")
+	@ResponseStatus(code = HttpStatus.OK)
+	public List<Producto> filtrarProductos(@PathVariable String term){	
+		
+		return clienteService.findProductoByNombre(term);
 	}
 }
