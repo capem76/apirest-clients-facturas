@@ -1,5 +1,6 @@
 package com.capename.springboot.backend.apirest.auth;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -35,10 +36,13 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        configuration.setAllowedOrigins( Arrays.asList(
+        		"http://localhost:4200", 
+        		"https://capena-clientes-facturas.web.app", 
+        		"https://capena-clientes-facturas.firebaseapp.com") );
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowCredentials(true);
-        configuration.setAllowedHeaders(Arrays.asList("Content-type", "Authorization"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

@@ -38,7 +38,7 @@ import com.capename.springboot.backend.apirest.models.entity.Region;
 import com.capename.springboot.backend.apirest.models.services.IClienteService;
 import com.capename.springboot.backend.apirest.models.services.IUploadFileService;
 
-@CrossOrigin( origins = {"http://localhost:4200"} )
+@CrossOrigin( origins = {"http://localhost:4200", "https://capena-clientes-facturas.web.app", "https://capena-clientes-facturas.firebaseapp.com"} )
 @RestController
 @RequestMapping("/api")
 public class ClienteRestController {
@@ -226,7 +226,7 @@ public class ClienteRestController {
 			try {
 				nombreArchivo = uploadService.copiarArchivo(archivo, cliente.getId().toString() );
 			} catch (IOException e) {
-				logger.error("Error en subir fichero: " + e.getCause().getMessage());
+//				logger.error("Error en subir fichero: " + e.getCause().getMessage());
 				e.printStackTrace();
 				response.put("mensaje", "Error al subir fichero ");
 				response.put("error", e.getMessage().concat(": ").concat(e.getCause().getMessage()));

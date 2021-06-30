@@ -19,7 +19,7 @@ import com.capename.springboot.backend.apirest.util.Utileria;
 public class UploadFileServiceImpl implements IUploadFileService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(UploadFileServiceImpl.class);	
-	private final static String DIRECTORIO_UPLOAD = "uploads";
+	private final static String DIRECTORIO_UPLOAD = "/home/ubuntu/Downloads/uploads";
 
 	@Override
 	public Resource cargarFoto(String nombreFoto) throws MalformedURLException {
@@ -44,7 +44,8 @@ public class UploadFileServiceImpl implements IUploadFileService {
 //		String nombreArchivo = UUID.randomUUID().toString().concat("-").concat( nombreArchivoOriginal.replace(" ", "-") );
 		String nombreArchivo = Utileria.randomAlphaNumeric(10) + "-"+ "CLT" + clienteId +"-" + nombreArchivoOriginal.replace(" ", "-");
 		Path rutaArchivo = getPath(nombreArchivo);
-		logger.info(rutaArchivo.toString());
+		logger.info("clase: " + this.getClass() + "method: " + "copiarArchivo " +  rutaArchivo.toString() );
+		logger.info("archivo: " + archivo );
 				
 		Files.copy(archivo.getInputStream(), rutaArchivo);
 		

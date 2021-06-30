@@ -36,8 +36,8 @@
  INSERT INTO clientes (region_id, nombre, apellido, email, create_at) values(8, 'Francisca', 'Patacabra', 'fpatacabra@hotmail.com', '2020-04-06');
  
  /* Creamos algunos usuarios con sus roles */
- INSERT INTO `usuarios` (username, password, enabled, nombre, apellido, email) VALUES ('andres', '$2a$10$bw5VQyPlBiHy/M/vxlNsIONlF.D6jilOpVZhwrtGgPwCfTCzTprZy', 1, 'Andres', 'Guzman', 'aguzman@chile.cl');
- INSERT INTO `usuarios` (username, password, enabled, nombre, apellido, email) VALUES ('admin', '$2a$10$xRduA2lwKawgnQpS.emX3Oe/XH.Zbam2pBC2AXxmvhdVZgCgKcjku', 1, 'Cristian', 'Pena', 'apena@gmail.com');
+ INSERT INTO `usuarios` (username, password, enabled, nombre, apellido, email) VALUES ('andres', '$2a$10$GOzifbrFC.cSf0ypTHsM4eEZ/18r5NAHk.EFoyN1C0p.LueaTTRU.', 1, 'Andres', 'Guzman', 'aguzman@chile.cl');
+ INSERT INTO `usuarios` (username, password, enabled, nombre, apellido, email) VALUES ('admin', '$2a$10$I8yRb5ePknfT65lL5CI5KeCrEma3XzebvwnBjeU3BoFpW70LPTCPC', 1, 'Cristian', 'Pena', 'apena@gmail.com');
  
  INSERT INTO `roles` (nombre) VALUES ('ROLE_USER');
  INSERT INTO `roles` (nombre) VALUES ('ROLE_ADMIN');
