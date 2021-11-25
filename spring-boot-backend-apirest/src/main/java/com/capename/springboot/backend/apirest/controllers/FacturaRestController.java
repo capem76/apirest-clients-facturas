@@ -21,7 +21,10 @@ import com.capename.springboot.backend.apirest.models.entity.Factura;
 import com.capename.springboot.backend.apirest.models.entity.Producto;
 import com.capename.springboot.backend.apirest.models.services.IClienteService;
 
-@CrossOrigin(origins = {"http://localhost:4200", "https://capena-clientes-facturas.web.app", "https://capena-clientes-facturas.firebaseapp.com" })
+@CrossOrigin(origins = {
+		"http://localhost:4200",
+		"http://www.c-pena.com",
+		"*"})
 @RestController
 @RequestMapping("/api")
 public class FacturaRestController {

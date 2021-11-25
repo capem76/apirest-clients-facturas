@@ -38,7 +38,10 @@ import com.capename.springboot.backend.apirest.models.entity.Region;
 import com.capename.springboot.backend.apirest.models.services.IClienteService;
 import com.capename.springboot.backend.apirest.models.services.IUploadFileService;
 
-@CrossOrigin( origins = {"http://localhost:4200", "https://capena-clientes-facturas.web.app", "https://capena-clientes-facturas.firebaseapp.com"} )
+@CrossOrigin( origins = {
+		"http://localhost:4200",
+		"http://www.c-pena.com",
+		"*"} )
 @RestController
 @RequestMapping("/api")
 public class ClienteRestController {

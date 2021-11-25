@@ -1,15 +1,15 @@
 package com.capename.springboot.cackend.apirest;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootConfiguration
 @SpringBootTest
-class SpringBootBackendApirestApplicationTests {
+public class SpringBootBackendApirestApplicationTests {
 
 	@Test
-	void contextLoads() {
+	public void contextLoads() {
 	}
 
 }
